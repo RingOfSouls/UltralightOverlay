@@ -1,0 +1,9 @@
+{
+  "sound.enable":{
+    "sounds":[
+      {
+        "name":"ultralightoverlay:enable","stream":false
+      }
+    ]
+  }
+}

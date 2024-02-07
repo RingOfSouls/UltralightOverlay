@@ -1,0 +1,103 @@
+plugins {
+    id 'eclipse'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+compileJava.options.encoding = 'UTF-8'
+
+version = '1.0'
+group = 'me.ringofsoul.ultralightoverlay'
+archivesBaseName = '[CO-Ring]UltralightOverlay'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+minecraft {
+    mappings channel: 'official', version: '1.19.2'
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+mavenCentral()
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.19.2-43.3.2'
+    implementation "com.labymedia:ultralight-java-base:0.4.12"
+    implementation "com.labymedia:ultralight-java-databind:0.4.12"
+    implementation "com.labymedia:ultralight-java-gpu:0.4.12"
+}
+
+jar {
+    enabled = false
+    dependsOn(shadowJar { classifier = null })
+    manifest {
+        attributes([
+                "Specification-Title"     : "UltralightOverlay",
+                "Specification-Vendor"    : "UltralightOverlaysareus",
+                "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : project.jar.archiveVersion,
+                "Implementation-Vendor"   : "UltralightOverlaysareus",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+jar.finalizedBy('reobfJar')
+
+shadowJar {
+    dependencies {
+        exclude(dependency('org.spongepowered:'))
+        exclude(dependency('org.slf4j:'))
+        exclude(dependency('org.ow2.asm:'))
+        exclude(dependency('org.openjdk.nashorn:'))
+        exclude(dependency('org.lwjgl:'))
+        exclude(dependency('org.jline:'))
+        exclude(dependency('org.jetbrains:'))
+        exclude(dependency('org.glassfish:'))
+        exclude(dependency('org.codehaus.plexus:'))
+        exclude(dependency('org.checkerframework:'))
+        exclude(dependency('org.apache.maven:'))
+        exclude(dependency('org.apache.logging.log4j:'))
+        exclude(dependency('org.apache.httpcomponents:'))
+        exclude(dependency('org.apache.commons:'))
+        exclude(dependency('org.antlr:'))
+        exclude(dependency('org.abego.treelayout:'))
+        exclude(dependency('net.sf.jopt-simple:'))
+        exclude(dependency('net.minecrell:'))
+        exclude(dependency('net.minecraftforge:'))
+        exclude(dependency('net.minecraft:'))
+        exclude(dependency('net.jodah:'))
+        exclude(dependency('net.java.dev.jna:'))
+        exclude(dependency('it.unimi.dsi:'))
+        exclude(dependency('io.netty:'))
+        exclude(dependency('cpw.mods:'))
+        exclude(dependency('commons-logging:'))
+        exclude(dependency('commons-io:'))
+        exclude(dependency('commons-codec:'))
+        exclude(dependency('com.mojang:'))
+        exclude(dependency('com.machinezoo.noexception:'))
+        exclude(dependency('com.ibm.icu:'))
+        exclude(dependency('com.google.j2objc:'))
+        exclude(dependency('com.google.guava:'))
+        exclude(dependency('com.google.errorprone:'))
+        exclude(dependency('com.google.code.gson:'))
+        exclude(dependency('com.google.code.findbugs:'))
+        exclude(dependency('com.github.oshi:'))
+        exclude(dependency('com.electronwill.night-config:'))
+        exclude(dependency('ca.weblite:'))
+    }
+}
+reobf {
+    shadowJar {} // Reobfuscate the shadowed JAR
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}

@@ -1,0 +1,29 @@
+modLoader="javafml"
+loaderVersion="[43,)" 
+license="All rights reserved"
+[[mods]]
+modId="ultralightoverlay"
+version="${file.jarVersion}"
+displayName="UltralightOverlay"
+displayURL="https://corecraft.ru/"
+credits="The Forge and FML guys, for making this example"
+authors="RingOfSoul"
+description='''
+UltralightOverlay mod for CoreCraft
+'''
+
+[[dependencies.ultralightoverlay]]
+    modId="forge"
+    mandatory=true
+    versionRange="[43,)"  
+    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+    ordering="NONE"
+    # Side this dependency is applied on - BOTH, CLIENT or SERVER
+    side="CLIENT"
+
+[[dependencies.ultralightoverlay]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19.2,1.20)"
+    ordering="NONE"
+    side="CLIENT"
